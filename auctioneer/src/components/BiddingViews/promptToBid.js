@@ -19,7 +19,6 @@ function BidPrompt (props) {
 }
 
 const mstp = state => {
-    console.log(state)
   return {
     items: state.items,
     compPlayer: state.compPlayer,

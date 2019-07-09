@@ -1,7 +1,8 @@
 import {
     SET_CURRENT_ITEM,
     SET_IS_BIDDING,
-    MESSAGE_DISPLAYED
+    MESSAGE_DISPLAYED,
+    START_TIMER
   } from '../actions/action';
 
 
@@ -124,7 +125,8 @@ const initialState = {
     },
     currentItem: [],
     biddingOnCurrent: false,
-    displayedMessage: false
+    displayedMessage: false,
+    timeLeft: 30
 };
 
 function reducer(state = initialState, action) {
@@ -145,6 +147,12 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 displayedMessage: action.payload
+            }
+
+        case START_TIMER:
+            return {
+                ...state,
+                timeLeft: action.payload
             }
 
         default:

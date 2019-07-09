@@ -22,6 +22,11 @@ export const Auctioneer = styled.div`
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 3px 3px 3px grey;
+
+    h4 {
+        font-size: 18px;
+        margin-bottom: 0;
+    }
 `
 
 export const UserChat = styled.div`
@@ -36,28 +41,6 @@ export const UserChat = styled.div`
 export const InnerUserChat = styled.div`
     margin-top: 20px;
     padding: 10px;
-
-    .loading {
-        animation: gear-spin infinite 1s linear;
-    }
-
-    @keyframes gear-spin {
-        from {
-        transform: rotate(360deg);
-        }
-        to {
-        transform: rotate(0deg);
-        }
-    }
-
-    @keyframes big-gear-spin {
-        from {
-        transform: rotate(180deg);
-        }
-        to {
-        transform: rotate(360deg);
-        }
-    }
 `
 
 export const Buttons = styled.button`
@@ -101,4 +84,70 @@ export const Inputs = styled.div`
     input::active {
         outline: none;
     }
+`
+
+export const BidderAreaWrap = styled.div`
+    width: auto;
+    max-width: 50%;
+    height: auto;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px grey;
+    text-align: center;
+`
+export const PlayerCardWrap = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+`
+
+export const PlayerCard = styled.div`
+    width: 30%;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    margin: 10px;
+
+    img {
+        width: 50px;
+    }
+`
+
+export const LoadingWrap = styled.img`
+    animation: load-spin infinite 1s linear;
+
+        @keyframes load-spin {
+            from {
+            transform: rotate(360deg);
+            }
+            to {
+            transform: rotate(0deg);
+            }
+        }
+`
+
+export const TimerWrap = styled.div`
+    width: auto;
+    max-width: 50%;
+    height: auto;
+    background-color: #000;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    margin-top: 0;
+    padding-top: 0;
+
+    h3 {
+        padding: 2px 0;
+    }
+`
+
+export const BidAmount = styled.div`
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Roboto', sans serif;
 `

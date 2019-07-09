@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { GameWrap, Auctioneer, UserChat } from '../styles/style';
-import { SetCurrentItem, SetIsBidding, WasMessageDisplayed } from '../actions/action';
+import { GameWrap, Auctioneer, UserChat, BidderAreaWrap } from '../styles/style';
+import { SetCurrentItem, SetIsBidding, WasMessageDisplayed, StartTimer } from '../actions/action';
 import BidPrompt from './BiddingViews/promptToBid';
 import BidOnItem from './BiddingViews/bid';
 import AuctioneerCard from './AuctioneerCard/auctioneer';
+import BiddersArea from './BiddersArea/biddersArea';
 
 class Main extends Component {
     constructor(props) {
@@ -19,7 +20,6 @@ class Main extends Component {
         const current = this.props.items.filter(item => {
             return item.id === random
         });
-        console.log(current)
         this.props.SetCurrentItem(current);
     }
 
@@ -32,6 +32,7 @@ class Main extends Component {
         this.props.SetIsBidding(bool);
         if(bool) {
             this.chooseRandomBidders();
+            this.startTimer();
         }
     }
 
@@ -41,7 +42,6 @@ class Main extends Component {
         if(numberOfBotsBidding === 0) {
             numberOfBotsBidding++
         }
-        console.log('number of bidders:', numberOfBotsBidding);
 
         // pick which bots will play randomly
         let pickable = this.props.compPlayers;
@@ -70,6 +70,18 @@ class Main extends Component {
         });
     }
 
+    startTimer = () => {
+        // start countdown timer on load
+        setInterval(() => {
+            if(this.props.timeLeft > 0) {
+                let time = this.props.timeLeft -1
+                this.props.StartTimer(time)
+            } else {
+                clearInterval();
+            }
+        }, 1000);
+    }
+
     render() {
         console.log(this.state.currentBidders)
         return (
@@ -78,8 +90,15 @@ class Main extends Component {
                     <AuctioneerCard />
                 </Auctioneer>
 
+                <BidderAreaWrap>
+                    <BiddersArea players={this.state.currentBidders}/>
+                </BidderAreaWrap>
+
                 <UserChat>
-                    {this.props.displayedMessage ? <BidOnItem /> : <BidPrompt setBiddingStatus={this.setBiddingStatus}/>}
+                    {this.props.displayedMessage ?
+                        <BidOnItem /> :
+                        <BidPrompt setBiddingStatus={this.setBiddingStatus}/>
+                    }
                 </UserChat>
             </GameWrap>
         );
@@ -87,14 +106,14 @@ class Main extends Component {
 }
 
 const mstp = state => {
-    console.log(state)
   return {
     items: state.items,
     compPlayers: state.compPlayers,
     livePlayer: state.livePlayer,
     currentItem: state.currentItem,
-    displayedMessage: state.displayedMessage
+    displayedMessage: state.displayedMessage,
+    timeLeft: state.timeLeft
   }
 }
 
-export default connect(mstp, {SetCurrentItem, SetIsBidding, WasMessageDisplayed})(Main);
+export default connect(mstp, { SetCurrentItem, SetIsBidding, WasMessageDisplayed, StartTimer })(Main);
