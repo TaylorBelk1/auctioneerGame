@@ -2,7 +2,11 @@ import {
     SET_CURRENT_ITEM,
     SET_IS_BIDDING,
     MESSAGE_DISPLAYED,
-    START_TIMER
+    START_TIMER,
+    SET_CURRENT_BOTS,
+    SET_PLAYER_BID,
+    SET_HIGHEST_BOT_BID,
+    SET_HIGHEST_OVERALL
   } from '../actions/action';
 
 
@@ -12,50 +16,36 @@ const initialState = {
             id: 1,
             name: 'Sega Genesis Console with controllers and 12 games',
             min: 120.00,
-            currentHighBid: 0,
-            currentHighBidder: ''
         },
         {
             id: 2,
             name: 'High-End Gaming PC',
             min: 1000.00,
-            currentHighBid: 0,
-            currentHighBidder: ''
         },
         {
             id: 3,
             name: 'Super Ninetendo with controllers and 8 games',
             min: 250.00,
-            currentHighBid: 0,
-            currentHighBidder: ''
         },
         {
             id: 4,
             name: 'Ninetendo 64 with controllers and 9 games',
             min: 120.00,
-            currentHighBid: 0,
-            currentHighBidder: ''
         },
         {
             id: 5,
             name: 'PlayStation 1 with controllers and 15 games',
             min: 180.00,
-            currentHighBid: 0,
-            currentHighBidder: ''
         },
         {
             id: 6,
             name: 'Gameboy Color and 12 games',
             min: 240.00,
-            currentHighBid: 0,
-            currentHighBidder: ''
         },
         {
             id: 7,
             name: 'Sega Dreamcast Console with Controllers and 12 Games',
             min: 150.00,
-            currentHighBid: 0,
-            currentHighBidder: ''
         },
     ],
     soldItems: [],
@@ -126,7 +116,12 @@ const initialState = {
     currentItem: [],
     biddingOnCurrent: false,
     displayedMessage: false,
-    timeLeft: 30
+    timeLeft: 10,
+    currentBidders: [],
+    currentBotHigh: 0,
+    currentBotHighBidder: {},
+    currentHighBid: 0,
+    currentHighBidder: ''
 };
 
 function reducer(state = initialState, action) {
@@ -153,6 +148,38 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 timeLeft: action.payload
+            }
+
+        case SET_CURRENT_BOTS:
+            return {
+                ...state,
+                currentBidders: action.payload
+            }
+
+        case SET_PLAYER_BID: {
+            return {
+                ...state,
+                livePlayer: {
+                    ...state.livePlayer,
+                    currentBid: action.payload
+                }
+            }
+        }
+
+        case SET_HIGHEST_BOT_BID:
+            const { bid, highestBidder } = action.payload;
+            return {
+                ...state,
+                currentBotHigh: bid,
+                currentBotHighBidder: highestBidder
+            }
+
+        case SET_HIGHEST_OVERALL:
+            const { bids, finalHighestBidder } = action.payload;
+            return {
+                ...state,
+                currentHighBid: bids,
+                currentHighBidder: finalHighestBidder
             }
 
         default:

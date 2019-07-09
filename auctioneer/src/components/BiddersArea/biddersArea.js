@@ -2,12 +2,13 @@ import React from 'react';
 import { PlayerCardWrap } from '../../styles/style';
 import LoadingSpinner from '../loading/loadingSpinner';
 import PlayerCards from './PlayerCards';
+import { connect } from 'react-redux';
 
 const BiddersArea = (props) => {
     return(
         <PlayerCardWrap>
-            {props.players.length > 0 ?
-             props.players.map(player => {
+            {props.currentBidders.length > 0 ?
+             props.currentBidders.map(player => {
                 return(
                     <PlayerCards players={player} key={player.id}/>
                 )
@@ -21,4 +22,10 @@ const BiddersArea = (props) => {
     )
 }
 
-export default BiddersArea
+const mstp = state => {
+    return {
+      currentBidders: state.currentBidders
+    }
+  }
+
+  export default connect(mstp, {})(BiddersArea);

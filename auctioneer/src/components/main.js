@@ -1,44 +1,51 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { GameWrap, Auctioneer, UserChat, BidderAreaWrap } from '../styles/style';
-import { SetCurrentItem, SetIsBidding, WasMessageDisplayed, StartTimer } from '../actions/action';
+import {
+    SetCurrentItem,
+    SetIsBidding,
+    WasMessageDisplayed,
+    StartTimer,
+    SetCurrentBots,
+    SetHighestBotBid
+} from '../actions/action';
 import BidPrompt from './BiddingViews/promptToBid';
 import BidOnItem from './BiddingViews/bid';
 import AuctioneerCard from './AuctioneerCard/auctioneer';
 import BiddersArea from './BiddersArea/biddersArea';
+import { getRandomIntRounded } from '../utils/utils';
 
 class Main extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentBidders: []
-        }
-    }
 
     componentDidMount() {
-        const random = this.setItem();
+        const random = getRandomIntRounded(1, 7);
         const current = this.props.items.filter(item => {
             return item.id === random
         });
         this.props.SetCurrentItem(current);
     }
 
-    setItem = () => {
-        return Math.floor(Math.random() * Math.floor(7));
+    componentDidUpdate(prevProps) {
+        if(this.props.currentBidders !== prevProps.currentBidders) {
+            const results = this.findHighestBotBid(this.props.currentBidders);
+            this.props.SetHighestBotBid(results)
+        }
     }
 
     setBiddingStatus = (bool) => {
         this.props.WasMessageDisplayed(true);
         this.props.SetIsBidding(bool);
         if(bool) {
-            this.chooseRandomBidders();
             this.startTimer();
+            setTimeout(() => {
+                this.chooseRandomBidders();
+            }, 10000)
         }
     }
 
     chooseRandomBidders = () => {
         //select a random number of bots to play
-        let numberOfBotsBidding = Math.floor(Math.random() * Math.floor(8));
+        let numberOfBotsBidding = getRandomIntRounded(1, 7);
         if(numberOfBotsBidding === 0) {
             numberOfBotsBidding++
         }
@@ -64,10 +71,9 @@ class Main extends Component {
             return bidderIds.includes(item.id);
         })
 
-        this.setState({
-            ...this.state,
-            currentBidders: currentPlayers
-        });
+        const newCurrentPlayers = this.generateBotMaxAmountForRound(currentPlayers);
+
+        this.props.SetCurrentBots(newCurrentPlayers);
     }
 
     startTimer = () => {
@@ -82,8 +88,37 @@ class Main extends Component {
         }, 1000);
     }
 
+    generateBotMaxAmountForRound = (arr) => {
+        const newCurrentBidder = arr.map(player => {
+            // generate a max for this item
+            const max = player.totalBudget / 2;
+            const randomMax = Math.floor(Math.random() * Math.floor(max));
+            const realMax = randomMax + this.props.currentItem[0].min;
+
+            // generate a random bid for this item
+            const randomInitialBid = Math.floor(Math.random() * Math.floor(realMax/2));
+
+            return {...player, maxForCurrent: realMax, currentBid: randomInitialBid}
+        });
+        return newCurrentBidder
+    }
+
+    findHighestBotBid = (arr) => {
+        let bid = 0;
+        let highestBidder  = [];
+        arr.map(function(a) {
+            if(a.currentBid > bid) {
+                bid = a.currentBid
+                if(highestBidder.length > 0) {
+                    highestBidder.pop();
+                }
+            highestBidder.push(a);
+            }
+        });
+        return {bid, highestBidder}
+    }
+
     render() {
-        console.log(this.state.currentBidders)
         return (
             <GameWrap>
                 <Auctioneer>
@@ -91,7 +126,7 @@ class Main extends Component {
                 </Auctioneer>
 
                 <BidderAreaWrap>
-                    <BiddersArea players={this.state.currentBidders}/>
+                    <BiddersArea players={this.props.currentBidders}/>
                 </BidderAreaWrap>
 
                 <UserChat>
@@ -112,8 +147,16 @@ const mstp = state => {
     livePlayer: state.livePlayer,
     currentItem: state.currentItem,
     displayedMessage: state.displayedMessage,
-    timeLeft: state.timeLeft
+    timeLeft: state.timeLeft,
+    currentBidders: state.currentBidders
   }
 }
 
-export default connect(mstp, { SetCurrentItem, SetIsBidding, WasMessageDisplayed, StartTimer })(Main);
+export default connect(mstp, {
+    SetCurrentItem,
+    SetIsBidding,
+    WasMessageDisplayed,
+    StartTimer,
+    SetCurrentBots,
+    SetHighestBotBid
+    })(Main);

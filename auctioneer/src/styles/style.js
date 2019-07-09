@@ -117,6 +117,7 @@ export const PlayerCard = styled.div`
 `
 
 export const LoadingWrap = styled.img`
+    max-width: 25px;
     animation: load-spin infinite 1s linear;
 
         @keyframes load-spin {
