@@ -87,16 +87,17 @@ export const Inputs = styled.div`
 `
 
 export const BidderAreaWrap = styled.div`
+    margin: 0 auto;
     width: auto;
     max-width: 50%;
     height: auto;
-    margin: 20px auto;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 3px 3px 3px grey;
     text-align: center;
 `
 export const PlayerCardWrap = styled.div`
+    margin: 20px auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -151,4 +152,22 @@ export const BidAmount = styled.div`
     font-weight: bold;
     font-size: 18px;
     font-family: 'Roboto', sans serif;
+`
+
+export const HighestDisplay = styled.div`
+    width: auto;
+    max-width: 30%;
+    height: auto;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px grey;
+    text-align: center;
+`
+
+export const HighBidWrap = styled.div`
+    margin: 10px 0;
+    h3 {
+        font-size: 16px;
+    }
 `

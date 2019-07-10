@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 const Timer = (props) => {
     return(
         <TimerWrap>
-            {props.timeLeft === 0 ?
+            {props.timeLeft < 0 ?
             <h3>Times Up!</h3> :
             <h3>00:{props.timeLeft}</h3>
             }

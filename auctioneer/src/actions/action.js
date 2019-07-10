@@ -6,6 +6,9 @@ export const SET_CURRENT_BOTS = 'SET_CURRENT_BOTS';
 export const SET_PLAYER_BID = 'SET_PLAYER_BID';
 export const SET_HIGHEST_BOT_BID = 'SET_HIGHEST_BOT_BID';
 export const SET_HIGHEST_OVERALL = 'SET_HIGHEST_OVERALL';
+export const ADD_TO_BIDS = 'ADD_TO_BIDS';
+export const SET_HIGHEST_BIDDER = 'SET_HIGHEST_BIDDER';
+export const SET_INIT_TIMER_STATUS = 'SET_INIT_TIMER_STATUS';
 
 export function SetCurrentItem(id) {
   return {
@@ -49,16 +52,30 @@ export function SetPlayerBid(bid) {
   }
 }
 
-export function SetHighestBotBid(obj) {
+export function SetOverallHighest(bid) {
   return {
-    type: SET_HIGHEST_BOT_BID,
+    type: SET_HIGHEST_OVERALL,
+    payload: bid
+  }
+}
+
+export function AddToBidsArray(bid) {
+  return {
+    type: ADD_TO_BIDS,
+    payload: bid
+  }
+}
+
+export function SetHighestBidder(obj) {
+  return {
+    type: SET_HIGHEST_BIDDER,
     payload: obj
   }
 }
 
-export function SetOverallHighest(obj) {
+export function SetInitTimerStatus(bool) {
   return {
-    type: SET_HIGHEST_OVERALL,
-    payload: obj
+    type: SET_INIT_TIMER_STATUS,
+    payload: bool
   }
 }

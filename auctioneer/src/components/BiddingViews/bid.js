@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { InnerUserChat, Inputs } from '../../styles/style';
 import LoadingSpinner from '../loading/loadingSpinner';
-import { SetPlayerBid } from '../../actions/action';
+import { SetPlayerBid, SetOverallHighest, AddToBidsArray } from '../../actions/action';
 
 class BidOnItem extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             bid: ""
         }
@@ -16,10 +16,20 @@ class BidOnItem extends React.Component {
         this.setState({ [e.target.name] : e.target.value });
     }
 
+    handleKeyUp = e => {
+        if(e.key === 'Enter') {
+            this.handleSubmit(this.state.bid)
+        }
+    }
+
     handleSubmit = (bid) => {
+        bid = parseInt(bid);
         this.props.SetPlayerBid(bid);
-        // need method here to send bid back to parent
-        // need method here to trigger bots to bid again
+        this.props.AddToBidsArray(bid);
+        setTimeout(() => {
+            this.props.findHighestOverallBid();
+        })
+        this.setState({ bid: '' });
     }
 
     render() {
@@ -37,14 +47,15 @@ class BidOnItem extends React.Component {
                     <Inputs>
                         <input
                             name="bid"
+                            onKeyUp={this.handleKeyUp}
                             onChange={this.handleChange}
                             value={this.state.bid}
                             placeholder="bid goes here"
-                            disabled={this.props.timeLeft > 0 ? true : false}
+                            disabled={!this.props.initTimerDone ? true : false}
                         />
                         <button
                             onClick={() => this.handleSubmit(this.state.bid)}
-                            disabled={this.props.timeLeft > 0 ? true : false}>
+                            disabled={!this.props.initTimerDone ? true : false}>
                             Bid
                         </button>
                     </Inputs>
@@ -65,8 +76,12 @@ const mstp = state => {
     livePlayer: state.livePlayer,
     biddingOnCurrent: state.biddingOnCurrent,
     displayedMessage: state.displayedMessage,
-    timeLeft: state.timeLeft
+    timeLeft: state.timeLeft,
+    currentBotHigh: state.currentBotHigh,
+    currentBotHighBidder: state.currentBotHighBidder,
+    currentBids: state.currentBids,
+    initTimerDone: state.initTimerDone
   }
 }
 
-export default connect(mstp, { SetPlayerBid })(BidOnItem);
+export default connect(mstp, { SetPlayerBid, SetOverallHighest, AddToBidsArray })(BidOnItem);

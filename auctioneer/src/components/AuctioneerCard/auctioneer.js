@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Timer from '../Timer/timer';
 
 const AuctioneerCard = (props) => {
-    console.log(props.currentItem)
     return (
         <>
             <img src={auct} alt="auctioneer" width="250px"/>
@@ -13,7 +12,10 @@ const AuctioneerCard = (props) => {
                         {props.currentItem && props.currentItem.map(item => {
                             return <p key={item.id}>{item.name}</p>
                         })}
-                    <h4>Bidding starts in:</h4>
+                        {props.initTimerDone ?
+                            <h4>Bidding ends in:</h4> :
+                            <h4>Bidding starts in:</h4>
+                        }
                     <Timer />
                 </div>
         </>
@@ -22,7 +24,8 @@ const AuctioneerCard = (props) => {
 
 const mstp = state => {
   return {
-    currentItem: state.currentItem
+    currentItem: state.currentItem,
+    initTimerDone: state.initTimerDone
   }
 }
 

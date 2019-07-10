@@ -5,8 +5,10 @@ import {
     START_TIMER,
     SET_CURRENT_BOTS,
     SET_PLAYER_BID,
-    SET_HIGHEST_BOT_BID,
-    SET_HIGHEST_OVERALL
+    SET_HIGHEST_OVERALL,
+    ADD_TO_BIDS,
+    SET_HIGHEST_BIDDER,
+    SET_INIT_TIMER_STATUS
   } from '../actions/action';
 
 
@@ -117,11 +119,12 @@ const initialState = {
     biddingOnCurrent: false,
     displayedMessage: false,
     timeLeft: 10,
+    initTimerDone: false,
     currentBidders: [],
-    currentBotHigh: 0,
-    currentBotHighBidder: {},
+    currentBids: [],
     currentHighBid: 0,
-    currentHighBidder: ''
+    currentHighBidder: {},
+    winner: {}
 };
 
 function reducer(state = initialState, action) {
@@ -151,35 +154,45 @@ function reducer(state = initialState, action) {
             }
 
         case SET_CURRENT_BOTS:
+            console.log('from reducer', action.payload)
             return {
                 ...state,
                 currentBidders: action.payload
             }
 
         case SET_PLAYER_BID: {
+            const newPlayer = {...initialState.livePlayer};
+            newPlayer.currentBid = action.payload;
             return {
                 ...state,
-                livePlayer: {
-                    ...state.livePlayer,
-                    currentBid: action.payload
-                }
+                livePlayer: newPlayer
             }
         }
 
-        case SET_HIGHEST_BOT_BID:
-            const { bid, highestBidder } = action.payload;
+        case SET_HIGHEST_OVERALL:
             return {
                 ...state,
-                currentBotHigh: bid,
-                currentBotHighBidder: highestBidder
+                currentHighBid: action.payload
             }
 
-        case SET_HIGHEST_OVERALL:
-            const { bids, finalHighestBidder } = action.payload;
+        case ADD_TO_BIDS:
+            const newCurrentBids = initialState.currentBids;
+            newCurrentBids.push(action.payload)
             return {
                 ...state,
-                currentHighBid: bids,
-                currentHighBidder: finalHighestBidder
+                currentBids: newCurrentBids
+            }
+
+        case SET_HIGHEST_BIDDER:
+            return {
+                ...state,
+                currentHighBidder: action.payload
+            }
+
+        case SET_INIT_TIMER_STATUS:
+            return {
+                ...state,
+                initTimerDone: action.payload
             }
 
         default:

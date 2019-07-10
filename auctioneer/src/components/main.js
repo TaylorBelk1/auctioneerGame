@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { GameWrap, Auctioneer, UserChat, BidderAreaWrap } from '../styles/style';
+import { GameWrap, Auctioneer, UserChat, BidderAreaWrap, HighestDisplay } from '../styles/style';
 import {
     SetCurrentItem,
     SetIsBidding,
     WasMessageDisplayed,
     StartTimer,
     SetCurrentBots,
-    SetHighestBotBid
+    SetOverallHighest,
+    SetHighestBidder,
+    SetInitTimerStatus
 } from '../actions/action';
 import BidPrompt from './BiddingViews/promptToBid';
 import BidOnItem from './BiddingViews/bid';
 import AuctioneerCard from './AuctioneerCard/auctioneer';
 import BiddersArea from './BiddersArea/biddersArea';
 import { getRandomIntRounded } from '../utils/utils';
+import CurrentHigh from './AuctioneerCard/currentHighest';
 
 class Main extends Component {
 
@@ -25,13 +28,6 @@ class Main extends Component {
         this.props.SetCurrentItem(current);
     }
 
-    componentDidUpdate(prevProps) {
-        if(this.props.currentBidders !== prevProps.currentBidders) {
-            const results = this.findHighestBotBid(this.props.currentBidders);
-            this.props.SetHighestBotBid(results)
-        }
-    }
-
     setBiddingStatus = (bool) => {
         this.props.WasMessageDisplayed(true);
         this.props.SetIsBidding(bool);
@@ -39,6 +35,8 @@ class Main extends Component {
             this.startTimer();
             setTimeout(() => {
                 this.chooseRandomBidders();
+                this.props.SetInitTimerStatus(true);
+                this.props.StartTimer(59);
             }, 10000)
         }
     }
@@ -103,19 +101,26 @@ class Main extends Component {
         return newCurrentBidder
     }
 
-    findHighestBotBid = (arr) => {
-        let bid = 0;
-        let highestBidder  = [];
-        arr.map(function(a) {
-            if(a.currentBid > bid) {
-                bid = a.currentBid
-                if(highestBidder.length > 0) {
-                    highestBidder.pop();
-                }
-            highestBidder.push(a);
-            }
+    findHighestOverallBid = () => {
+        const bids = this.props.currentBids.map(bid => {
+            return parseInt(bid);
         });
-        return {bid, highestBidder}
+        console.log(bids);
+        const max = Math.max(...bids);
+        console.log('max:', max);
+        this.props.SetOverallHighest(max);
+
+        this.findTheHighestBidder(max)
+    }
+
+    findTheHighestBidder = (bid) => {
+        const allBidders = [];
+        allBidders.push(...this.props.currentBidders, this.props.livePlayer);
+
+        const highestBidder = allBidders.filter(player => {
+            return player.currentBid === bid
+        });
+        this.props.SetHighestBidder(highestBidder);
     }
 
     render() {
@@ -125,14 +130,23 @@ class Main extends Component {
                     <AuctioneerCard />
                 </Auctioneer>
 
-                <BidderAreaWrap>
-                    <BiddersArea players={this.props.currentBidders}/>
-                </BidderAreaWrap>
+                <HighestDisplay>
+                    {this.props.currentHighBid > 0 ? <CurrentHigh /> : <></>}
+                </HighestDisplay>
+
+                {this.props.displayedMessage ?
+                    <BidderAreaWrap>
+                        <BiddersArea
+                            players={this.props.currentBidders}
+                            findHighestOverallBid={this.findHighestOverallBid}
+                        />
+                    </BidderAreaWrap> : <></>
+                }
 
                 <UserChat>
                     {this.props.displayedMessage ?
-                        <BidOnItem /> :
-                        <BidPrompt setBiddingStatus={this.setBiddingStatus}/>
+                        <BidOnItem findHighestOverallBid={this.findHighestOverallBid} /> :
+                        <BidPrompt setBiddingStatus={this.setBiddingStatus} />
                     }
                 </UserChat>
             </GameWrap>
@@ -148,7 +162,11 @@ const mstp = state => {
     currentItem: state.currentItem,
     displayedMessage: state.displayedMessage,
     timeLeft: state.timeLeft,
-    currentBidders: state.currentBidders
+    currentBidders: state.currentBidders,
+    currentHighBid: state.currentHighBid,
+    currentBids: state.currentBids,
+    currentHighBidder: state.currentHighBidder,
+    initTimerDone: state.initTimerDone
   }
 }
 
@@ -158,5 +176,7 @@ export default connect(mstp, {
     WasMessageDisplayed,
     StartTimer,
     SetCurrentBots,
-    SetHighestBotBid
+    SetOverallHighest,
+    SetHighestBidder,
+    SetInitTimerStatus
     })(Main);

@@ -4,6 +4,7 @@ import user from '../../assetts/user.png';
 import { connect } from 'react-redux';
 import LoadingSpinner from '../loading/loadingSpinner';
 import { getRandomInt } from '../../utils/utils';
+import { AddToBidsArray } from '../../actions/action';
 
 class PlayerCards extends React.Component {
     constructor(props) {
@@ -21,16 +22,11 @@ class PlayerCards extends React.Component {
                 ...this.state,
                 canRender: true
             })
-        }, random)
+        }, random);
+        this.props.AddToBidsArray(this.props.players.currentBid);
+        this.props.findHighestOverallBid();
     }
 
-    // getRandomInt = (min, max) => {
-    //     return Math.random() * (max - min) + min;
-    // }
-
-
-
-    // const randomTime = getRandomInt(500, 2000);
     render() {
         return(
             <PlayerCard key={this.props.players.id}>
@@ -55,4 +51,4 @@ const mstp = state => {
     }
   }
 
-  export default connect(mstp, {})(PlayerCards);
+  export default connect(mstp, {AddToBidsArray})(PlayerCards);

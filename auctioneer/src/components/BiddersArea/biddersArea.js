@@ -10,7 +10,11 @@ const BiddersArea = (props) => {
             {props.currentBidders.length > 0 ?
              props.currentBidders.map(player => {
                 return(
-                    <PlayerCards players={player} key={player.id}/>
+                    <PlayerCards
+                        findHighestOverallBid={props.findHighestOverallBid}
+                        players={player}
+                        key={player.id}
+                    />
                 )
             }) :
             <div>
