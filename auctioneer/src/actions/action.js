@@ -9,6 +9,10 @@ export const SET_HIGHEST_OVERALL = 'SET_HIGHEST_OVERALL';
 export const ADD_TO_BIDS = 'ADD_TO_BIDS';
 export const SET_HIGHEST_BIDDER = 'SET_HIGHEST_BIDDER';
 export const SET_INIT_TIMER_STATUS = 'SET_INIT_TIMER_STATUS';
+export const SET_NEW_ROUND_BUTTON = 'SET_NEW_ROUND_BUTTON';
+export const RESET_BIDS = 'RESET_BIDS';
+export const SET_NEW_BIDS = 'SET_NEW_BIDS';
+export const REPLACE_BIDS = 'REPLACE_BIDS';
 
 export function SetCurrentItem(id) {
   return {
@@ -67,9 +71,10 @@ export function AddToBidsArray(bid) {
 }
 
 export function SetHighestBidder(obj) {
+  console.log('action',obj)
   return {
     type: SET_HIGHEST_BIDDER,
-    payload: obj
+    payload: {...obj}
   }
 }
 
@@ -77,5 +82,33 @@ export function SetInitTimerStatus(bool) {
   return {
     type: SET_INIT_TIMER_STATUS,
     payload: bool
+  }
+}
+
+export function SetNewRound(bool) {
+  return {
+    type: SET_NEW_ROUND_BUTTON,
+    payload: bool
+  }
+}
+
+export function ClearCurrentBids() {
+  return {
+    type: RESET_BIDS,
+    payload: []
+  }
+}
+
+export function SetNewBids(bool) {
+  return {
+    type: SET_NEW_BIDS,
+    payload: bool
+  }
+}
+
+export function ReplaceCurrentBids(arr) {
+  return {
+    type: REPLACE_BIDS,
+    payload: arr
   }
 }

@@ -9,7 +9,11 @@ import {
     SetCurrentBots,
     SetOverallHighest,
     SetHighestBidder,
-    SetInitTimerStatus
+    SetInitTimerStatus,
+    AddToBidsArray,
+    ClearCurrentBids,
+    SetNewBids,
+    ReplaceCurrentBids
 } from '../actions/action';
 import BidPrompt from './BiddingViews/promptToBid';
 import BidOnItem from './BiddingViews/bid';
@@ -26,6 +30,12 @@ class Main extends Component {
             return item.id === random
         });
         this.props.SetCurrentItem(current);
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.initTimerDone && this.props.timeLeft <= 55 && this.props.timeLeft > 0) {
+
+        }
     }
 
     setBiddingStatus = (bool) => {
@@ -53,7 +63,7 @@ class Main extends Component {
         let bidderIds = [];
         for(let i = 0; i < numberOfBotsBidding; i++) {
             // create random bidder id's to use later
-            let tempBidder = Math.floor( Math.random() * (Math.floor(8) ) );
+            let tempBidder = getRandomIntRounded(1, 7);;
             // handle zeros
             if(tempBidder <= 0) {
                 tempBidder = 1;
@@ -102,37 +112,44 @@ class Main extends Component {
     }
 
     findHighestOverallBid = () => {
+        // parse all currentBids to int
         const bids = this.props.currentBids.map(bid => {
             return parseInt(bid);
         });
-        console.log(bids);
+        // find the highest bid in the array
         const max = Math.max(...bids);
-        console.log('max:', max);
+        // set the current highest bid
         this.props.SetOverallHighest(max);
-
         this.findTheHighestBidder(max)
     }
 
     findTheHighestBidder = (bid) => {
         const allBidders = [];
+        // push all the bot players and the livePlayer into one array
         allBidders.push(...this.props.currentBidders, this.props.livePlayer);
-
+        // return the bidder whose bid matches the highest bid
         const highestBidder = allBidders.filter(player => {
             return player.currentBid === bid
         });
-        this.props.SetHighestBidder(highestBidder);
+        this.props.SetHighestBidder(...highestBidder);
     }
 
     render() {
         return (
             <GameWrap>
+                <HighestDisplay>
+                    {this.props.currentHighBid > 0 ? <CurrentHigh /> : <></>}
+                </HighestDisplay>
                 <Auctioneer>
                     <AuctioneerCard />
                 </Auctioneer>
 
-                <HighestDisplay>
-                    {this.props.currentHighBid > 0 ? <CurrentHigh /> : <></>}
-                </HighestDisplay>
+                <UserChat>
+                    {this.props.displayedMessage ?
+                        <BidOnItem findHighestOverallBid={this.findHighestOverallBid} /> :
+                        <BidPrompt setBiddingStatus={this.setBiddingStatus} />
+                    }
+                </UserChat>
 
                 {this.props.displayedMessage ?
                     <BidderAreaWrap>
@@ -142,13 +159,6 @@ class Main extends Component {
                         />
                     </BidderAreaWrap> : <></>
                 }
-
-                <UserChat>
-                    {this.props.displayedMessage ?
-                        <BidOnItem findHighestOverallBid={this.findHighestOverallBid} /> :
-                        <BidPrompt setBiddingStatus={this.setBiddingStatus} />
-                    }
-                </UserChat>
             </GameWrap>
         );
     }
@@ -166,7 +176,8 @@ const mstp = state => {
     currentHighBid: state.currentHighBid,
     currentBids: state.currentBids,
     currentHighBidder: state.currentHighBidder,
-    initTimerDone: state.initTimerDone
+    initTimerDone: state.initTimerDone,
+    setNewBids: state.setNewBids
   }
 }
 
@@ -178,5 +189,9 @@ export default connect(mstp, {
     SetCurrentBots,
     SetOverallHighest,
     SetHighestBidder,
-    SetInitTimerStatus
+    SetInitTimerStatus,
+    AddToBidsArray,
+    ClearCurrentBids,
+    SetNewBids,
+    ReplaceCurrentBids
     })(Main);

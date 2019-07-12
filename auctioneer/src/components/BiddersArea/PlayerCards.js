@@ -16,6 +16,16 @@ class PlayerCards extends React.Component {
     }
 
     componentDidMount() {
+        this.generateBids();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.currentHighBid !== this.props.currentHighBid) {
+
+        }
+    }
+
+    generateBids = () => {
         const random = getRandomInt(800, 2000);
         setTimeout(() => {
             this.setState({
@@ -47,7 +57,10 @@ class PlayerCards extends React.Component {
 const mstp = state => {
     return {
       compPlayers: state.compPlayers,
-      livePlayer: state.livePlayer
+      livePlayer: state.livePlayer,
+      genNewBids: state.genNewBids,
+      currentHighBid: state.currentHighBid
+
     }
   }
 

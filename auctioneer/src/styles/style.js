@@ -7,30 +7,36 @@ export const AppWrap = styled.div`
 `
 
 export const GameWrap = styled.div`
-    width: 90%;
-    height: 90vh;
-    height: calc(var(--vh, 1vh) * 90);
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     margin: 0 auto;
 `
 
 export const Auctioneer = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-content: center;
     margin: 0 auto;
     margin-top: 20px;
-    width: 40%;
+    width: 90%;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 3px 3px 3px grey;
+    text-align: center;
 
     h4 {
         font-size: 18px;
         margin-bottom: 0;
     }
+
+    img {
+        align-self: center;
+    }
 `
 
 export const UserChat = styled.div`
-    width: 25%;
+    width: 90%;
     margin: 0 auto;
     background-color: #fff;
     border-radius: 5px;
@@ -57,7 +63,7 @@ export const Inputs = styled.div`
     margin: 0 auto;
     display: flex;
     flex-direction: row;
-    width: 80%;
+    width: 90%;
     height: 30px;
     border-radius: 5px;
     border: 1.2px solid lightgrey;
@@ -87,9 +93,9 @@ export const Inputs = styled.div`
 `
 
 export const BidderAreaWrap = styled.div`
-    margin: 0 auto;
+    margin: 20px auto;
     width: auto;
-    max-width: 50%;
+    max-width: 90%;
     height: auto;
     background-color: #fff;
     border-radius: 5px;
@@ -106,7 +112,7 @@ export const PlayerCardWrap = styled.div`
 `
 
 export const PlayerCard = styled.div`
-    width: 30%;
+    width: 90%;
     border: 1px solid lightgrey;
     border-radius: 5px;
     box-shadow: 2px 2px 3px grey;
@@ -140,7 +146,7 @@ export const TimerWrap = styled.div`
     text-align: center;
     border-radius: 5px;
     box-shadow: 2px 2px 3px grey;
-    margin-top: 0;
+    margin: 0 auto;
     padding-top: 0;
 
     h3 {
@@ -155,18 +161,24 @@ export const BidAmount = styled.div`
 `
 
 export const HighestDisplay = styled.div`
-    width: auto;
-    max-width: 30%;
-    height: auto;
-    margin: 20px auto;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 3px 3px 3px grey;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #3E3E3E;
+    margin: 0;
+    margin-bottom: 20px;
     text-align: center;
 `
 
 export const HighBidWrap = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    padding: 5px 10px;
     margin: 10px 0;
+    color: white;
     h3 {
         font-size: 16px;
     }
