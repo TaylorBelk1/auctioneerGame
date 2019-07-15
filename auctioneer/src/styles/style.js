@@ -199,7 +199,7 @@ export const WinLoseWrap = styled.div`
     border-radius: 5px;
     box-shadow: 3px 3px 3px grey;
     text-align: center;
-    margin-top: 85%;
+    margin-top: 100px;
 
     img {
         margin-bottom: 20px;
