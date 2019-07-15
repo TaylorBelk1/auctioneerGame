@@ -12,7 +12,10 @@ import {
     SET_NEW_ROUND_BUTTON,
     RESET_BIDS,
     SET_NEW_BIDS,
-    FIND_AND_REPLACE
+    FIND_AND_REPLACE,
+    SET_WINNER,
+    SET_WINNER_SCREEN,
+    SET_LOSER_SCREEN
   } from '../actions/action';
 
 
@@ -130,7 +133,9 @@ const initialState = {
     currentHighBidder: '',
     winner: {},
     showNewRoundButton: false,
-    setNewBids: false
+    setNewBids: false,
+    showWinnerView: false,
+    showLoserView: true
 };
 
 function reducer(state = initialState, action) {
@@ -221,6 +226,24 @@ function reducer(state = initialState, action) {
         case FIND_AND_REPLACE:
             return {
                 ...state
+            }
+
+        case SET_WINNER:
+            return {
+                ...state,
+                winner: action.payload
+            }
+
+        case SET_WINNER_SCREEN:
+            return {
+                ...state,
+                showWinnerView: action.payload
+            }
+
+        case SET_LOSER_SCREEN:
+            return {
+                ...state,
+                showLoserView: action.payload
             }
 
         default:

@@ -14,6 +14,10 @@ export const RESET_BIDS = 'RESET_BIDS';
 export const SET_NEW_BIDS = 'SET_NEW_BIDS';
 export const REPLACE_BIDS = 'REPLACE_BIDS';
 export const FIND_AND_REPLACE = 'FIND_AND_REPLACE';
+export const SET_WINNER = 'SET_WINNER';
+export const SET_WINNER_SCREEN = 'SET_WINNER_SCREEN';
+export const SET_LOSER_SCREEN = 'SET_LOSER_SCREEN';
+
 
 export function SetCurrentItem(id) {
   return {
@@ -110,5 +114,26 @@ export function FindAndReplaceBot(obj) {
   return {
     type: FIND_AND_REPLACE,
     payload: obj
+  }
+}
+
+export function SetWinner(obj) {
+  return {
+    type: SET_WINNER,
+    payload: obj
+  }
+}
+
+export function SetWinnerScreen(bool) {
+  return {
+    type: SET_WINNER_SCREEN,
+    payload: bool
+  }
+}
+
+export function SetLoserScreen(bool) {
+  return {
+    type: SET_LOSER_SCREEN,
+    payload: bool
   }
 }
