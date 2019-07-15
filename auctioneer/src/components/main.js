@@ -13,7 +13,7 @@ import {
     AddToBidsArray,
     ClearCurrentBids,
     SetNewBids,
-    ReplaceCurrentBids
+    FindAndReplaceBot
 } from '../actions/action';
 import BidPrompt from './BiddingViews/promptToBid';
 import BidOnItem from './BiddingViews/bid';
@@ -30,12 +30,58 @@ class Main extends Component {
             return item.id === random
         });
         this.props.SetCurrentItem(current);
+        setTimeout(() => {
+            this.biddingLoop();
+        }, 10000)
     }
 
-    componentDidUpdate(prevProps) {
-        if(this.props.initTimerDone && this.props.timeLeft <= 55 && this.props.timeLeft > 0) {
+    biddingLoop = () => {
+        console.log('called')
+        // create random time interval
+        const randomTime = getRandomIntRounded(2000, 8000);
+        setTimeout(() => {
+            // check currentBidders and remove the highest bidder if he exists
+            const notHighestBidders = this.props.currentBidders.filter(b => {
+                return b.id !== this.props.currentHighBidder.id
+            });
+            // pick a random bot that will vote
+            const max = notHighestBidders.length;
+            const randomId = getRandomIntRounded(0, max);
+            let newBidder = notHighestBidders[randomId];
+            // pick a random new bid for that bot
+            const randomBid = getRandomIntRounded(1, newBidder.maxForCurrent);
 
-        }
+            // if the randomBid is higher than the current high bid then update state
+            if(randomBid > this.props.currentHighBid) {
+                // find the index of the newBidder in the currentBidders array
+                const ind = this.props.currentBidders.findIndex(i => {
+                    return i.id === newBidder.id
+                });
+
+                // update the bidder at that index to the new bid in a temp array
+                const tempArr = this.props.currentBidders;
+                tempArr[ind].currentBid = randomBid;
+                // set the temp array to the new currentBidders array
+                this.props.SetCurrentBots(tempArr);
+
+                // find the highest bid
+                console.log('currentBidders', this.props.currentBidders)
+                let highest = 0;
+                let highestBidder = {};
+                this.props.currentBidders.forEach(i => {
+                    if(i.currentBid > highest) {
+                        highest = i.currentBid;
+                        highestBidder = {...i};
+                    }
+                })
+
+                this.props.SetOverallHighest(highest);
+                this.props.SetHighestBidder(highestBidder);
+            }
+            if(this.props.timeLeft > 0) {
+                this.biddingLoop();
+            }
+        }, randomTime);
     }
 
     setBiddingStatus = (bool) => {
@@ -53,7 +99,7 @@ class Main extends Component {
 
     chooseRandomBidders = () => {
         //select a random number of bots to play
-        let numberOfBotsBidding = getRandomIntRounded(1, 7);
+        let numberOfBotsBidding = getRandomIntRounded(2, 7);
         if(numberOfBotsBidding === 0) {
             numberOfBotsBidding++
         }
@@ -82,6 +128,7 @@ class Main extends Component {
         const newCurrentPlayers = this.generateBotMaxAmountForRound(currentPlayers);
 
         this.props.SetCurrentBots(newCurrentPlayers);
+        console.log('initial', this.props.currentBidders)
     }
 
     startTimer = () => {
@@ -131,7 +178,8 @@ class Main extends Component {
         const highestBidder = allBidders.filter(player => {
             return player.currentBid === bid
         });
-        this.props.SetHighestBidder(...highestBidder);
+
+        this.props.SetHighestBidder(highestBidder[0]);
     }
 
     render() {
@@ -193,5 +241,5 @@ export default connect(mstp, {
     AddToBidsArray,
     ClearCurrentBids,
     SetNewBids,
-    ReplaceCurrentBids
+    FindAndReplaceBot
     })(Main);

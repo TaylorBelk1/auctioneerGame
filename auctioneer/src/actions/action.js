@@ -13,6 +13,7 @@ export const SET_NEW_ROUND_BUTTON = 'SET_NEW_ROUND_BUTTON';
 export const RESET_BIDS = 'RESET_BIDS';
 export const SET_NEW_BIDS = 'SET_NEW_BIDS';
 export const REPLACE_BIDS = 'REPLACE_BIDS';
+export const FIND_AND_REPLACE = 'FIND_AND_REPLACE';
 
 export function SetCurrentItem(id) {
   return {
@@ -71,7 +72,6 @@ export function AddToBidsArray(bid) {
 }
 
 export function SetHighestBidder(obj) {
-  console.log('action',obj)
   return {
     type: SET_HIGHEST_BIDDER,
     payload: {...obj}
@@ -99,16 +99,16 @@ export function ClearCurrentBids() {
   }
 }
 
-export function SetNewBids(bool) {
+export function SetNewBids(obj) {
   return {
     type: SET_NEW_BIDS,
-    payload: bool
+    payload: obj
   }
 }
 
-export function ReplaceCurrentBids(arr) {
+export function FindAndReplaceBot(obj) {
   return {
-    type: REPLACE_BIDS,
-    payload: arr
+    type: FIND_AND_REPLACE,
+    payload: obj
   }
 }

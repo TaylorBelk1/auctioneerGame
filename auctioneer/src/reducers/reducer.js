@@ -12,7 +12,7 @@ import {
     SET_NEW_ROUND_BUTTON,
     RESET_BIDS,
     SET_NEW_BIDS,
-    REPLACE_BIDS
+    FIND_AND_REPLACE
   } from '../actions/action';
 
 
@@ -160,7 +160,6 @@ function reducer(state = initialState, action) {
             }
 
         case SET_CURRENT_BOTS:
-            console.log(action.payload)
             return {
                 ...state,
                 currentBidders: action.payload
@@ -182,7 +181,6 @@ function reducer(state = initialState, action) {
             }
 
         case ADD_TO_BIDS:
-            console.log(action.payload)
             const newCurrentBids = initialState.currentBids;
             newCurrentBids.push(action.payload)
             return {
@@ -209,7 +207,6 @@ function reducer(state = initialState, action) {
             }
 
         case RESET_BIDS:
-            console.log('reducer', action.payload)
             return {
                 ...state,
                 currentBids: action.payload
@@ -221,14 +218,9 @@ function reducer(state = initialState, action) {
                 setNewBids: action.payload
             }
 
-        case REPLACE_BIDS:
-            let end = initialState.currentBids.length;
-            let tempBids = initialState.currentBids;
-            tempBids.slice(0, end);
-            tempBids = action.payload
+        case FIND_AND_REPLACE:
             return {
-                ...state,
-                currentBids: tempBids
+                ...state
             }
 
         default:
