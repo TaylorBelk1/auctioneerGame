@@ -17,6 +17,7 @@ export const FIND_AND_REPLACE = 'FIND_AND_REPLACE';
 export const SET_WINNER = 'SET_WINNER';
 export const SET_WINNER_SCREEN = 'SET_WINNER_SCREEN';
 export const SET_LOSER_SCREEN = 'SET_LOSER_SCREEN';
+export const RESET_FOR_NEW_ROUND = 'RESET_FOR_NEW_ROUND';
 
 
 export function SetCurrentItem(id) {
@@ -135,5 +136,12 @@ export function SetLoserScreen(bool) {
   return {
     type: SET_LOSER_SCREEN,
     payload: bool
+  }
+}
+
+export function ResetStateForNewRound(obj) {
+  return {
+    type: RESET_FOR_NEW_ROUND,
+    payload: obj
   }
 }
