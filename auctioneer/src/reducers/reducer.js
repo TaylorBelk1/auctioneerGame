@@ -15,7 +15,8 @@ import {
     FIND_AND_REPLACE,
     SET_WINNER,
     SET_WINNER_SCREEN,
-    SET_LOSER_SCREEN
+    SET_LOSER_SCREEN,
+    RESET_FOR_NEW_ROUND
   } from '../actions/action';
 
 
@@ -135,7 +136,7 @@ const initialState = {
     showNewRoundButton: false,
     setNewBids: false,
     showWinnerView: false,
-    showLoserView: true
+    showLoserView: false
 };
 
 function reducer(state = initialState, action) {
@@ -244,6 +245,29 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 showLoserView: action.payload
+            }
+
+        case RESET_FOR_NEW_ROUND:
+            console.log('reducer', action.payload);
+            return {
+                ...state,
+                items: action.payload.items,
+                soldItems: action.payload.soldItems,
+                livePlayer: action.payload.livePlayer,
+                currentItem: [],
+                biddingOnCurrent: false,
+                displayedMessage: false,
+                timeLeft: 10,
+                initTimerDone: false,
+                currentBidders: [],
+                currentBids: [],
+                currentHighBid: 0,
+                currentHighBidder: '',
+                winner: {},
+                showNewRoundButton: false,
+                setNewBids: false,
+                showWinnerView: false,
+                showLoserView: false
             }
 
         default:
