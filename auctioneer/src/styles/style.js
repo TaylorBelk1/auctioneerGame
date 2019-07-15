@@ -183,3 +183,37 @@ export const HighBidWrap = styled.div`
         font-size: 16px;
     }
 `
+
+export const EndOfRoundWrap = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+`
+
+export const WinLoseWrap = styled.div`
+    margin: 0 auto;
+    align-content: center;
+    width: 90%;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px grey;
+    text-align: center;
+    margin-top: 85%;
+
+    img {
+        margin-bottom: 20px;
+    }
+
+    button {
+        font-size: 16px;
+        width: 40%;
+        height: 30px;
+        border: none;
+        color: #fff;
+        background-color: #176AFF;
+        justify-self: flex-end;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+`
