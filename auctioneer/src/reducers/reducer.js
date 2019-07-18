@@ -35,7 +35,7 @@ const initialState = {
         },
         {
             id: 3,
-            name: 'Super Ninetendo',
+            name: 'Super Nintendo',
             min: 250.00,
         },
         {
