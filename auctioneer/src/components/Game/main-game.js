@@ -104,6 +104,7 @@ class MainGame extends Component {
         console.log('setBiddingCalled')
         console.log('current Bids', this.props.currentBids)
         this.timer(this.props.timeLeft);
+        console.log(this.props.timeLeft)
         this.props.WasMessageDisplayed(true);
         this.chooseRandomBidders();
         console.log(this.props.currentBidders)
