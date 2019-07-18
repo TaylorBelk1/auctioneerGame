@@ -1,7 +1,9 @@
 import React from 'react';
-import auct from '../../assetts/auct.png';
+import auct from '../../../assetts/auct.png';
 import { connect } from 'react-redux';
-import Timer from '../Timer/timer';
+import Timer from '../../Timer/timer';
+
+// props from main timeLeft={this.state.timeLeft}
 
 const AuctioneerCard = (props) => {
     return (
@@ -12,10 +14,7 @@ const AuctioneerCard = (props) => {
                         {props.currentItem && props.currentItem.map(item => {
                             return <p key={item.id}>{item.name}</p>
                         })}
-                        {props.initTimerDone ?
-                            <h4>Bidding ends in:</h4> :
-                            <h4>Bidding starts in:</h4>
-                        }
+                    <h4>Bidding ends in:</h4>
                     <Timer />
                 </div>
         </>

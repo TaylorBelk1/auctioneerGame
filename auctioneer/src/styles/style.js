@@ -217,3 +217,58 @@ export const WinLoseWrap = styled.div`
         margin-bottom: 20px;
     }
 `
+
+export const PickItemWrap = styled.div`
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    h1 {
+        font-size: 26px;
+        margin: 20px auto;
+    }
+`
+
+export const PickItem = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    background-color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin: 5px auto;
+`
+
+export const PickItemSpan = styled.div`
+    align-self: center;
+    width: 90%;
+`
+
+export const PickItemInput = styled.div`
+    align-self: center;
+    width: 10%;
+`
+
+export const PickItemButton = styled.button`
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #176AFF;
+    color: #fff;
+    border: none;
+    padding: 20px;
+    margin-top: 10px;
+    font-size: 18px;
+    font-family: 'Roboto', sans serif;
+    letter-spacing: 1.5px;
+
+    :hover {
+        background-color: #3A80FF;
+    }
+`

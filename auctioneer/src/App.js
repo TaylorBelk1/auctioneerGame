@@ -2,12 +2,16 @@ import React from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import { AppWrap } from './styles/style';
-import Main from './components/main';
+import MainGame from './components/Game/main-game';
+import { Route } from 'react-router-dom';
+import PickAnItem from './components/ItemToBidOn/main-pick-item';
+
 
 function App() {
   return (
     <AppWrap>
-      <Main />
+      <Route exact path='/' component={PickAnItem} />
+      <Route exact path='/:id' component={MainGame} />
     </AppWrap>
   );
 }
