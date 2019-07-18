@@ -18,7 +18,7 @@ export const SET_WINNER = 'SET_WINNER';
 export const SET_WINNER_SCREEN = 'SET_WINNER_SCREEN';
 export const SET_LOSER_SCREEN = 'SET_LOSER_SCREEN';
 export const RESET_FOR_NEW_ROUND = 'RESET_FOR_NEW_ROUND';
-
+export const SET_ROUND_STATUS = 'SET_ROUND_STATUS';
 
 export function SetCurrentItem(id) {
   return {
@@ -98,9 +98,10 @@ export function SetNewRound(bool) {
 }
 
 export function ClearCurrentBids() {
+  console.log('***clear bids was called')
   return {
     type: RESET_BIDS,
-    payload: []
+    payload: [0]
   }
 }
 
@@ -143,5 +144,12 @@ export function ResetStateForNewRound(obj) {
   return {
     type: RESET_FOR_NEW_ROUND,
     payload: obj
+  }
+}
+
+export function SetRoundStatus(bool) {
+  return {
+    type: SET_ROUND_STATUS,
+    payload: bool
   }
 }

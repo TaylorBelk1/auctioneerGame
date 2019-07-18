@@ -16,7 +16,8 @@ import {
     SET_WINNER,
     SET_WINNER_SCREEN,
     SET_LOSER_SCREEN,
-    RESET_FOR_NEW_ROUND
+    RESET_FOR_NEW_ROUND,
+    SET_ROUND_STATUS
   } from '../actions/action';
 
 
@@ -24,7 +25,7 @@ const initialState = {
     items: [
         {
             id: 1,
-            name: 'Sega Genesis Console with controllers and 12 games',
+            name: 'Sega Genesis Console',
             min: 120.00,
         },
         {
@@ -34,27 +35,27 @@ const initialState = {
         },
         {
             id: 3,
-            name: 'Super Ninetendo with controllers and 8 games',
+            name: 'Super Ninetendo',
             min: 250.00,
         },
         {
             id: 4,
-            name: 'Ninetendo 64 with controllers and 9 games',
+            name: 'Ninetendo 64',
             min: 120.00,
         },
         {
             id: 5,
-            name: 'PlayStation 1 with controllers and 15 games',
+            name: 'PlayStation 1',
             min: 180.00,
         },
         {
             id: 6,
-            name: 'Gameboy Color and 12 games',
+            name: 'Gameboy Color',
             min: 240.00,
         },
         {
             id: 7,
-            name: 'Sega Dreamcast Console with Controllers and 12 Games',
+            name: 'Sega Dreamcast Console',
             min: 150.00,
         },
     ],
@@ -124,10 +125,8 @@ const initialState = {
         currentBid: 0,
     },
     currentItem: [],
-    biddingOnCurrent: false,
     displayedMessage: false,
-    timeLeft: 10,
-    initTimerDone: false,
+    timeLeft: 59,
     currentBidders: [],
     currentBids: [],
     currentHighBid: 0,
@@ -166,6 +165,7 @@ function reducer(state = initialState, action) {
             }
 
         case SET_CURRENT_BOTS:
+            console.log(action.payload)
             return {
                 ...state,
                 currentBidders: action.payload
@@ -249,15 +249,80 @@ function reducer(state = initialState, action) {
 
         case RESET_FOR_NEW_ROUND:
             console.log('reducer', action.payload);
+            const newLive = {...initialState.livePlayer};
+            if(action.payload.wonItems) {
+                newLive.wonItems.push(action.payload.wonItems);
+            }
+
+            const newSold = [...state.soldItems];
+            console.log(newSold)
+            if(action.payload.soldItems) {
+                newSold.push(action.payload.soldItems);
+            }
             return {
-                ...state,
                 items: action.payload.items,
-                soldItems: action.payload.soldItems,
-                livePlayer: action.payload.livePlayer,
+                soldItems: newSold,
+                compPlayers: [
+                    {
+                        id: 1,
+                        displayName: 'SirRochesterII',
+                        totalBudget: 1400,
+                        winCount: 0,
+                        wonItems: [],
+                        currentBid: 0,
+                        maxForCurrent: 0
+                    },
+                    {
+                        id: 2,
+                        displayName: 'WilfredMan',
+                        totalBudget: 1000,
+                        winCount: 0,
+                        wonItems: [],
+                        currentBid: 0,
+                        maxForCurrent: 0
+                    },
+                    {
+                        id: 3,
+                        displayName: 'SirBuysItAll',
+                        totalBudget: 2000,
+                        winCount: 0,
+                        wonItems: [],
+                        currentBid: 0,
+                        maxForCurrent: 0
+                    },
+                    {
+                        id: 4,
+                        displayName: '$IGotTooMuchMoney$',
+                        totalBudget: 2800,
+                        winCount: 0,
+                        wonItems: [],
+                        currentBid: 0,
+                        maxForCurrent: 0
+                    },
+                    {
+                        id: 5,
+                        displayName: 'Batman',
+                        totalBudget: 1200,
+                        winCount: 0,
+                        wonItems: [],
+                        currentBid: 0,
+                        maxForCurrent: 0
+                    },
+                    {
+                        id: 6,
+                        displayName: 'RobinOfLoxly',
+                        totalBudget: 900,
+                        winCount: 0,
+                        wonItems: [],
+                        currentBid: 0,
+                        maxForCurrent: 0
+                    }
+                ],
+                livePlayer: newLive,
                 currentItem: [],
                 biddingOnCurrent: false,
                 displayedMessage: false,
-                timeLeft: 10,
+                timeLeft: 59,
                 initTimerDone: false,
                 currentBidders: [],
                 currentBids: [],
@@ -267,7 +332,14 @@ function reducer(state = initialState, action) {
                 showNewRoundButton: false,
                 setNewBids: false,
                 showWinnerView: false,
-                showLoserView: false
+                showLoserView: false,
+                newRound: true
+            }
+
+        case SET_ROUND_STATUS:
+            return {
+                ...state,
+                newRound: action.payload
             }
 
         default:

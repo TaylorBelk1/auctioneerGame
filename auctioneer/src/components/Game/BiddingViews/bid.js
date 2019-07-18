@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { InnerUserChat, Inputs } from '../../styles/style';
-import LoadingSpinner from '../loading/loadingSpinner';
-import { SetPlayerBid, SetOverallHighest, AddToBidsArray } from '../../actions/action';
+import { InnerUserChat, Inputs } from '../../../styles/style';
+import LoadingSpinner from '../../loading/loadingSpinner';
+import { SetPlayerBid, SetOverallHighest, AddToBidsArray } from '../../../actions/action';
 
 class BidOnItem extends React.Component {
     constructor(props) {
@@ -26,16 +26,21 @@ class BidOnItem extends React.Component {
         bid = parseInt(bid);
         this.props.SetPlayerBid(bid);
         this.props.AddToBidsArray(bid);
+        // console.log('before timeout')
         setTimeout(() => {
+            // console.log('in timeout')
             this.props.findHighestOverallBid();
         })
-        this.setState({ bid: '' });
+        // console.log('after timeout')
+        setTimeout(() => {
+            this.setState({ bid: '' });
+        })
     }
 
     render() {
     return (
         <>
-            {this.props.displayedMessage && this.props.biddingOnCurrent ?
+            {this.props.displayedMessage ?
                 <InnerUserChat>
                     <h3>What would you like to bid?</h3>
                     {this.props.livePlayer.currentBid > 0 ?
@@ -51,11 +56,12 @@ class BidOnItem extends React.Component {
                             onChange={this.handleChange}
                             value={this.state.bid}
                             placeholder="bid goes here"
-                            disabled={!this.props.initTimerDone ? true : false}
+                            // disabled={!this.props.initTimerDone ? true : false}
                         />
                         <button
                             onClick={() => this.handleSubmit(this.state.bid)}
-                            disabled={!this.props.initTimerDone ? true : false}>
+                            // disabled={!this.props.initTimerDone ? true : false}
+                        >
                             Bid
                         </button>
                     </Inputs>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { PlayerCardWrap } from '../../styles/style';
-import LoadingSpinner from '../loading/loadingSpinner';
+import { PlayerCardWrap } from '../../../styles/style';
+import LoadingSpinner from '../../loading/loadingSpinner';
 import PlayerCards from './PlayerCards';
 import { connect } from 'react-redux';
 
