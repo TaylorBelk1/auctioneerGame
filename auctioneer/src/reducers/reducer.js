@@ -250,7 +250,7 @@ function reducer(state = initialState, action) {
         case RESET_FOR_NEW_ROUND:
             console.log('reducer', action.payload);
             const newLive = {...initialState.livePlayer};
-            if(action.payload.wonItems.length > 0) {
+            if(action.payload.wonItems) {
                 newLive.wonItems.push(action.payload.wonItems);
             }
 

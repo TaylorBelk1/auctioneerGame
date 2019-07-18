@@ -18,10 +18,10 @@ const PlayerWins = (props) => {
         const tempData = {
             items: newItems,
             soldItems: sold,
-            wonItems: sold
+            wonItems: {...sold[0]}
         }
         console.log(tempData)
-        props.ResetStateForNewRound()
+        props.ResetStateForNewRound(tempData)
         props.history.push('/');
     }
 
